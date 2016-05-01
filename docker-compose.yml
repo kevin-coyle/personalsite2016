@@ -1,0 +1,21 @@
+version: "2"
+services:
+  drupal:
+    env_file: .env
+    image: drupal:8.1.0-apache
+    volumes:
+      - "./app/modules:/var/www/html/modules"
+      - "./app/themes:/var/www/html/themes"
+    ports:
+      - "80"
+    links:
+      - db
+    restart: always
+  db:
+    env_file: .env
+    image: mysql
+    restart: always
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=true
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_DATABASE=${DB_NAME}
