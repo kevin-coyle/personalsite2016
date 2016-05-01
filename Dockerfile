@@ -6,6 +6,7 @@ COPY ./app/settings/settings.php /var/www/html/sites/default/settings.php
 # Drush installation
 RUN apt-get update -y
 RUN apt-get install wget -y
+RUN apt-get install mysql-client -y
 RUN wget http://files.drush.org/drush-unstable.phar
 RUN chmod +x drush-unstable.phar
 RUN mv drush-unstable.phar /usr/local/bin/drush
