@@ -1,5 +1,8 @@
 FROM drupal:8.1.0-apache
 
+#Copy the settings file
+COPY ./app/settings/settings.php /var/www/html/sites/default/settings.php
+
 # Drush installation
 RUN apt-get update -y
 RUN apt-get install wget -y
