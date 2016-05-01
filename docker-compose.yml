@@ -17,5 +17,3 @@ services:
     restart: always
     environment:
       - MYSQL_RANDOM_ROOT_PASSWORD=true
-      - MYSQL_USER=${DB_USER}
-      - MYSQL_DATABASE=${DB_NAME}
