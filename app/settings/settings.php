@@ -293,7 +293,7 @@ $config_directories = array();
  *   $settings['hash_salt'] = file_get_contents('/home/example/salt.txt');
  * @endcode
  */
- define("HASH") = getenv("HASH");
+define("HASH", getenv("HASH"));
 $settings['hash_salt'] = HASH;
 
 /**
