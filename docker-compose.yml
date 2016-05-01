@@ -8,10 +8,12 @@ services:
       - "./app/themes:/var/www/html/themes"
       - "./app/settings/settings.php:/var/www/html/sites/default/settings.php"
     ports:
-      - "80:80"
+      - "80"
     links:
       - db
     restart: always
+    depends_on:
+      - db
   db:
     env_file: .env
     image: mysql:5.6
