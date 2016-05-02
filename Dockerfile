@@ -24,4 +24,4 @@ RUN apt-get install netcat -y
 
 #SENDMAIL
 RUN apt-get install sendmail -y
-RUN echo "sendmail_path = /usr/sbin/sendmail -t -i" > /usr/local/etc/php/php.ini
+RUN echo "sendmail_path = /usr/sbin/sendmail -t -i" >> /usr/local/etc/php/php.ini
