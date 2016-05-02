@@ -1,13 +1,10 @@
 <?php
 
-/**
- * @file
- * Contains Drupal\formblock\Plugin\Block\ContactFormBlock.
- */
-
 namespace Drupal\formblock\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Block\Annotation\Block;
+use Drupal\Core\Annotation\Translation;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Datetime\DateFormatter;
 use Drupal\Core\Entity\EntityFormBuilderInterface;
@@ -17,7 +14,6 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Session\AccountInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use \Drupal\Core\Access\AccessResult;
 
 /**
  * Provides a block for contact form.
@@ -83,7 +79,7 @@ class ContactFormBlock extends BlockBase implements ContainerFactoryPluginInterf
   protected $dateFormatter;
 
   /**
-   * Constructs a new ContactFormBlock plugin.
+   * Constructs a new ContactFormBlock plugin
    *
    * @param array $configuration
    *   A configuration array containing information about the plugin instance.
@@ -91,26 +87,26 @@ class ContactFormBlock extends BlockBase implements ContainerFactoryPluginInterf
    *   The plugin_id for the plugin instance.
    * @param mixed $plugin_definition
    *   The plugin implementation definition.
-   * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
+   * @param \Drupal\Core\Entity\EntityManagerInterface $entityManager
    *   The entity manager.
-   * @param \Drupal\Core\Session\AccountInterface $current_user
+   * @param \Drupal\Core\Session\AccountInterface $currentUser
    *   The current user.
-   * @param \Drupal\Core\Entity\EntityFormBuilderInterface $entity_form_builder
+   * @param \Drupal\Core\Entity\EntityFormBuilderInterface $entityFormBuilder
    *   The entity form builder interface.
-   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
    *   The config factory.
    * @param \Drupal\Core\Flood\FloodInterface $flood
    *   The flood service.
-   * @param \Drupal\Core\DateTime\DateFormatter $date_formatter
+   * @param \Drupal\Core\DateTime\DateFormatter $dateFormatter
    *   The date formatter service.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityManagerInterface $entity_manager, AccountInterface $current_user, EntityFormBuilderInterface $entity_form_builder, ConfigFactoryInterface $config_factory, FloodInterface $flood, DateFormatter $date_formatter) {
-    $this->entityManager = $entity_manager;
-    $this->currentUser = $current_user;
-    $this->entityFormBuilder = $entity_form_builder;
-    $this->configFactory = $config_factory;
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityManagerInterface $entityManager, AccountInterface $currentUser, EntityFormBuilderInterface $entityFormBuilder, ConfigFactoryInterface $configFactory, FloodInterface $flood, DateFormatter $dateFormatter) {
+    $this->entityManager = $entityManager;
+    $this->currentUser = $currentUser;
+    $this->entityFormBuilder = $entityFormBuilder;
+    $this->configFactory = $configFactory;
     $this->flood = $flood;
-    $this->dateFormatter = $date_formatter;
+    $this->dateFormatter = $dateFormatter;
 
     // We have to do this after our injections since the parent constructor
     // calls defaultConfiguration() which depends on the configFactory service.
@@ -215,32 +211,23 @@ class ContactFormBlock extends BlockBase implements ContainerFactoryPluginInterf
    * Implements \Drupal\block\BlockBase::blockAccess().
    */
   public function blockAccess(AccountInterface $account) {
-    if ($this->contactForm->access('view', $account) && $account->hasPermission('access site-wide contact form')) {
-      return AccessResult::allowed();
-    }
-    else {
-      return AccessResult::forbidden();
-    }
+    return ($this->contactForm->access('view', $account) && $account->hasPermission('access site-wide contact form'));
   }
 
   /**
    * Returns the current status of flood control.
    *
-   * @return bool
-   *   Checking if the user can submit more contact forms.
+   * @return
    */
   protected function floodControl() {
     $limit = $this->configFactory->get('contact.settings')->get('flood.limit');
     $interval = $this->configFactory->get('contact.settings')->get('flood.interval');
-
     if (!$this->flood->isAllowed('contact', $limit, $interval)) {
       return $this->t('You cannot send more than %limit messages in @interval. Try again later.', array(
         '%limit' => $limit,
         '@interval' => $this->dateFormatter->formatInterval($interval),
       ));
     }
-
     return FALSE;
   }
-
 }

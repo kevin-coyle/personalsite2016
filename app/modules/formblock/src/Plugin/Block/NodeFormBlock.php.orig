@@ -1,13 +1,10 @@
 <?php
 
-/**
- * @file
- * Contains Drupal\formblock\Plugin\Block\NodeFormBlock.
- */
-
 namespace Drupal\formblock\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Block\Annotation\Block;
+use Drupal\Core\Annotation\Translation;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Component\Utility\Xss;
@@ -48,7 +45,7 @@ class NodeFormBlock extends BlockBase implements ContainerFactoryPluginInterface
   protected $entityFormBuilder;
 
   /**
-   * Constructs a new NodeFormBlock plugin.
+   * Constructs a new NodeFormBlock plugin
    *
    * @param array $configuration
    *   A configuration array containing information about the plugin instance.
@@ -56,17 +53,17 @@ class NodeFormBlock extends BlockBase implements ContainerFactoryPluginInterface
    *   The plugin_id for the plugin instance.
    * @param mixed $plugin_definition
    *   The plugin implementation definition.
-   * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
+   * @param \Drupal\Core\Entity\EntityManagerInterface $entityManger
    *   The entity manager.
-   * @param \Drupal\Core\Entity\EntityFormBuilderInterface $entity_form_builder
+   * @param \Drupal\Core\Entity\EntityFormBuilderInterface $entityFormBuilder
    *   The entity form builder.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityManagerInterface $entity_manager, EntityFormBuilderInterface $entity_form_builder) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityManagerInterface $entityManager, EntityFormBuilderInterface $entityFormBuilder) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->setConfiguration($configuration);
 
-    $this->entityManager = $entity_manager;
-    $this->entityFormBuilder = $entity_form_builder;
+    $this->entityManager = $entityManager;
+    $this->entityFormBuilder = $entityFormBuilder;
   }
 
   /**
@@ -148,8 +145,6 @@ class NodeFormBlock extends BlockBase implements ContainerFactoryPluginInterface
    */
   public function blockAccess(AccountInterface $account) {
     $access_control_handler = $this->entityManager->getAccessControlHandler('node');
-
     return $access_control_handler->createAccess($this->configuration['type'], $account);
   }
-
 }

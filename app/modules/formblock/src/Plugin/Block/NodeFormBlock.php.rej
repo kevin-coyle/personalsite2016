@@ -1,0 +1,22 @@
+***************
+*** 112,120 ****
+    }
+  
+    /**
+-    * Get an arrau of node types
+     *
+     * @return array
+     */
+    protected function getNodeTypes() {
+      return array_map(function ($bundle_info) {
+--- 115,124 ----
+    }
+  
+    /**
++    * Get an arrau of node types.
+     *
+     * @return array
++    *   Which node types.
+     */
+    protected function getNodeTypes() {
+      return array_map(function ($bundle_info) {
