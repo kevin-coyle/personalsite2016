@@ -28,3 +28,4 @@ RUN echo "sendmail_path = /usr/sbin/sendmail -t -i" >> /usr/local/etc/php/php.in
 COPY ./app/modules /var/www/html/modules
 RUN php /var/www/html/modules/composer_manager/scripts/init.php
 RUN cd /var/www/html && composer drupal-update
+RUN cd /var/www/html && composer dump-autoload
