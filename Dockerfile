@@ -25,5 +25,6 @@ RUN apt-get install netcat -y
 #SENDMAIL
 RUN apt-get install sendmail -y
 RUN echo "sendmail_path = /usr/sbin/sendmail -t -i" >> /usr/local/etc/php/php.ini
+COPY ./app/modules /var/www/html/modules
 RUN php /var/www/html/modules/composer_manager/scripts/init.php
 RUN cd /var/www/html && composer drupal-update
